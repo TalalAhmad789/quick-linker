@@ -10,6 +10,7 @@ export default function Home() {
     shortUrl: ""
   })
   const [generatedUrl, setGeneratedUrl] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -17,18 +18,27 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const response = await fetch("/api/url", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", },
-      body: JSON.stringify(form),
-    });
-    const data = await response.json()
-    if (data.success == true) {
-      setGeneratedUrl(`${process.env.NEXT_PUBLIC_HOST}/${form.shortUrl}`)
-      setForm({ url: "", shortUrl: "" })
-      alert(data.message)
-    } else {
-      alert(data.message)
+    try {
+      setLoading(true)
+      const response = await fetch("/api/url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify(form),
+      });
+      const data = await response.json()
+      if (data.success == true) {
+        setGeneratedUrl(`${process.env.NEXT_PUBLIC_HOST}/${form.shortUrl}`)
+        setForm({ url: "", shortUrl: "" })
+        alert(data.message)
+      } else {
+        alert(data.message)
+      }
+    } catch (error) {
+      console.log("Error on getting response: ", error)
+      alert("Something went wrong")
+      setLoading(false)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -66,7 +76,7 @@ export default function Home() {
               type="submit"
               className="bg-[#e93363] text-white font-medium px-6 py-3 rounded-full transition-all duration-200 ease-in hover:bg-[#d42d56] cursor-pointer"
             >
-              Shorten
+              {loading ? "Loading..." : "Shorten"}
             </button>
           </div>
 
