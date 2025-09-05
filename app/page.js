@@ -62,7 +62,7 @@ export default function Home() {
               name="url"
               value={form.url}
               placeholder="Paste your long URL here..."
-              className="flex-1 min-w-0 px-4 py-3 border rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#e93363]"
+              className="flex-1 min-w-0 px-4 py-3 border focus:border-0 rounded-full shadow-sm focus:outline-none placeholder:text-gray-500 focus:ring-2 text-gray-700 focus:ring-[#e93363]"
             />
             <input
               onChange={handleChange}
@@ -70,7 +70,7 @@ export default function Home() {
               name="shortUrl"
               value={form.shortUrl}
               placeholder="Paste your Short URL here..."
-              className="flex-1 min-w-0 px-4 py-3 border rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#e93363]"
+              className="flex-1 min-w-0 px-4 py-3 focus:border-0 border rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#e93363] text-gray-700 placeholder:text-gray-500"
             />
             <button
               type="submit"
