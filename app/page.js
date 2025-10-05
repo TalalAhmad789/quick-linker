@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
+import { FaCopy } from "react-icons/fa";
+import { toast } from 'react-toastify';
 
 export default function Home() {
   const [form, setForm] = useState({
@@ -29,18 +31,60 @@ export default function Home() {
       if (data.success == true) {
         setGeneratedUrl(`${process.env.NEXT_PUBLIC_HOST}/${form.shortUrl}`)
         setForm({ url: "", shortUrl: "" })
-        alert(data.message)
+        toast.success(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       } else {
-        alert(data.message)
+        toast.error(data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
       }
     } catch (error) {
       console.log("Error on getting response: ", error)
-      alert("Something went wrong")
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       setLoading(false)
     } finally {
       setLoading(false)
     }
   }
+
+  const handleCopy = (value) => {
+    navigator.clipboard.writeText(value)
+    toast.success("Link Copied!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  }
+
 
   return (
     <>
@@ -81,8 +125,8 @@ export default function Home() {
           </div>
 
           {generatedUrl && (
-            <div className="text-gray-700 font-bold mt-5">
-              Your ShortUrl:{" "}
+            <div className="text-gray-700 font-bold mt-5 flex items-center gap-x-2">
+              <div>Your ShortUrl:{" "}</div>
               <Link
                 href={generatedUrl}
                 target="_blank"
@@ -90,6 +134,7 @@ export default function Home() {
               >
                 {generatedUrl}
               </Link>
+              <FaCopy onClick={() => { handleCopy(generatedUrl) }} className="hover:scale-105" />
             </div>
           )}
         </form>
